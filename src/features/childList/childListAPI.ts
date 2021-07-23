@@ -1,5 +1,7 @@
 import axios from "axios";
-import { Child, PagedData } from "./childListSlice";
+import { Child, ChildId, PagedData } from "./childListSlice";
+
+// This whole file could be simplified by adding a data service that handles API calls for us
 
 // A mock function to mimic making an async request for data
 export function fetchCount(amount = 1) {
@@ -8,9 +10,7 @@ export function fetchCount(amount = 1) {
   );
 }
 
-
 // This is written to simulate calling an API that supports pagination.
-// Ideally, I would have some sort of data service layer that makes these calls if it were more complex.
 // Since we do have all the data, it could easily be cached so it doesn't all have to be retrieved each page.
 export async function fetchChildren(page: number = 1, perPage: number = 10): Promise<PagedData<Child>> {
   const params = {
@@ -44,4 +44,64 @@ export async function fetchChildren(page: number = 1, perPage: number = 10): Pro
 
   return ret;
 
+}
+
+export type CheckInChildAPIParams = {
+  accessToken: string,
+  pickupTime: string, // Not sure if this should be Date, require a "XX:XX" format, etc.
+}
+export type CheckInChildAPIResult = {
+  childId: ChildId,
+  success: boolean,
+}
+export type CheckOutChildAPIParams = {
+  accessToken: string,
+}
+export type CheckOutChildAPIResult = {
+  childId: ChildId,
+  success: boolean,
+}
+
+export async function checkInChildAPI(childId: ChildId): Promise<CheckInChildAPIResult> {
+  // Actual error handling would be better but this works fine in this case
+  if (!childId || childId.length === 0) return { childId: childId, success: false };
+
+  const now = new Date();
+  const params: CheckInChildAPIParams = {
+    accessToken: '234ffdb8-0889-4be3-b096-97ab1679752c',
+    pickupTime: now.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    })
+  };
+
+  // URI would ideally not be used here, and instead be handled by the data service, API wrapper, or env
+  const res = await axios.post(`https://tryfamly.co/api/v2/children/${childId}/checkins`, params);
+
+  const ret = {
+    childId: childId,
+    success: res && res.status === 200,
+  }
+
+  return ret;
+}
+export async function checkOutChildAPI(childId: ChildId): Promise<CheckInChildAPIResult> {
+  // Actual error handling would be better but this works fine in this case
+  if (!childId || childId.length === 0) return { childId: childId, success: false };
+
+  const now = new Date();
+  const params: CheckOutChildAPIParams = {
+    accessToken: '234ffdb8-0889-4be3-b096-97ab1679752c',
+  };
+
+  // URI would ideally not be used here, and instead be handled by the data service, API wrapper, or env
+  const res = await axios.post(`https://tryfamly.co/api/v2/children/${childId}/checkout`, params);
+
+  const ret = {
+    childId: childId,
+    success: res && res.status === 200,
+  }
+
+  return ret;
 }

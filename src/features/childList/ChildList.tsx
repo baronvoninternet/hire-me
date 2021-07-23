@@ -9,6 +9,8 @@ import {
   incrementIfOdd,
   selectChildren,
   loadChildrenDataAsync,
+  checkInChildAsync,
+  checkOutChildAsync,
   Child,
 } from './childListSlice';
 import styles from './ChildList.module.css';
@@ -40,6 +42,14 @@ export function ChildList() {
             className={styles.row}>
             <div className={styles.value}>{child.childId}</div>
             <div className={styles.value}>{child.name.fullName}</div>
+            <div>
+              {child.checkedIn &&
+                <button className={styles.asyncButton}
+                  onClick={() => dispatch(checkOutChildAsync(child.childId))}>Check Out</button>}
+              {!child.checkedIn &&
+                <button className={styles.asyncButton}
+                  onClick={() => dispatch(checkInChildAsync(child.childId))}>Check In</button>}
+            </div>
           </div>
         ))}
       </div>

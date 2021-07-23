@@ -8,6 +8,10 @@ Run `yarn start`
 
 I started with the template from `create-react-template --template redux-typescript` to get a basic structure with styles, tests, etc.
 
+I tried to stick with React best practices, but I come from an Angular environment with less experience in React.
+
+With a tiny project this size, redux is over-complicated, but I chose to use it because I felt it gave a more real-world example of a much more complex project.
+
 Since all the data is returned at once, but it should be paged, I thought of a few different options:
 1. Load the data from the API initially, then only show a subset of it at a time.
 2. Call the API each time data is needed but act as though we only got the subset needed. 
@@ -15,6 +19,10 @@ Since all the data is returned at once, but it should be paged, I thought of a f
 I felt option 1 was unrealistic because in a real world scenario there could be a huge amount of data that would actually come with its own pagination/limits from the API and would be harder to "fix" later. Data would also get out of sync with the server if changes were made there in the meantime.
 
 I chose option 2 because it will allow the component to be built in a more flexible way that doesn't need the entire dataset at once.
+
+For that reason (the ambiguity of how the real system works) I implemented a very simple paging system with a next/prev button.
+
+Another choice was in how to handle repeated clicks on a checkin button. In this case, the API appears to be idempotent so it doesn't do any harm to allow it so I left it. With a little more work, we could block repeated calls based on childId, which would save wasted API calls.
 
 ## Known Bugs
 

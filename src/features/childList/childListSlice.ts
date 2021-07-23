@@ -125,15 +125,19 @@ export const childListSlice = createSlice({
         // TODO: add some sort of blocking for repeated clicks until fulfilled
       })
       .addCase(checkInChildAsync.fulfilled, (state, action) => {
-        const childIndex = state.children.data.findIndex((child: Child) => child.childId === action.payload.childId);
-        state.children.data[childIndex].checkedIn = true;
+        if (action.payload.success === true) {
+          const childIndex = state.children.data.findIndex((child: Child) => child.childId === action.payload.childId);
+          state.children.data[childIndex].checkedIn = true;
+        }
       })
       .addCase(checkOutChildAsync.pending, (state, action) => {
         // TODO: add some sort of blocking for repeated clicks until fulfilled
       })
       .addCase(checkOutChildAsync.fulfilled, (state, action) => {
-        const childIndex = state.children.data.findIndex((child: Child) => child.childId === action.payload.childId);
-        state.children.data[childIndex].checkedIn = false;
+        if (action.payload.success === true) {
+          const childIndex = state.children.data.findIndex((child: Child) => child.childId === action.payload.childId);
+          state.children.data[childIndex].checkedIn = false;
+        }
       })
       .addCase(loadChildrenDataAsync.pending, (state, action) => {
         // TODO: add some sort of blocking for repeated clicks until fulfilled

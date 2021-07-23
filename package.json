@@ -1,6 +1,7 @@
 {
   "name": "famlyapp",
   "version": "0.1.0",
+  "license": "none",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",

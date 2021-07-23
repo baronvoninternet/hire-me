@@ -1,9 +1,9 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import childlistReducer from '../features/childlist/childlistSlice';
+import childListReducer from '../features/childList/childListSlice';
 
 export const store = configureStore({
   reducer: {
-    childlist: childlistReducer,
+    childList: childListReducer,
   },
 });
 

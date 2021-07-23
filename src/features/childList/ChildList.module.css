@@ -4,7 +4,7 @@
   justify-content: center;
 }
 
-.row > button {
+.row>button {
   margin-left: 4px;
   margin-right: 8px;
 }
@@ -14,7 +14,8 @@
 }
 
 .value {
-  font-size: 78px;
+  flex: 1;
+  font-size: 24px;
   padding-left: 16px;
   padding-right: 16px;
   margin-top: 2px;
@@ -22,6 +23,8 @@
 }
 
 .button {
+  flex: 0;
+
   appearance: none;
   background: none;
   font-size: 32px;

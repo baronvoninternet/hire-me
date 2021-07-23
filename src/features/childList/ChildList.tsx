@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
@@ -7,61 +7,49 @@ import {
   incrementByAmount,
   incrementAsync,
   incrementIfOdd,
-  selectCount,
-} from './childlistSlice';
+  selectChildren,
+  loadChildrenDataAsync,
+  Child,
+} from './childListSlice';
 import styles from './ChildList.module.css';
 
 export function ChildList() {
-  const count = useAppSelector(selectCount);
+  const childrenListPage = useAppSelector(selectChildren);
   const dispatch = useAppDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const incrementValue = Number(incrementAmount) || 0;
+  const perPage = 10;
+  const hasPrev = currentPage > 1;
+  const hasNext = childrenListPage.hasMore;
+
+  useEffect(() => {
+    (async () => {
+      // This should probably dispatch a loadChildren event that handles it all
+      dispatch(loadChildrenDataAsync({ page: currentPage, perPage: perPage }));
+      // const children = await fetchChildrenData(currentPage, perPage);
+      // dispatch(setCurrentChildren(children));
+    })();
+  }, [currentPage, perPage]);
 
   return (
     <div>
-      <div className={styles.row}>
-        <button
-          className={styles.button}
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          -
-        </button>
-        <span className={styles.value}>{count}</span>
-        <button
-          className={styles.button}
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          +
-        </button>
+      <h1>Children</h1>
+      <div>
+        {childrenListPage!.data.map((child: Child) => (
+          <div key={child.childId}
+            className={styles.row}>
+            <div className={styles.value}>{child.childId}</div>
+            <div className={styles.value}>{child.name.fullName}</div>
+          </div>
+        ))}
       </div>
       <div className={styles.row}>
-        <input
-          className={styles.textbox}
-          aria-label="Set increment amount"
-          value={incrementAmount}
-          onChange={(e) => setIncrementAmount(e.target.value)}
-        />
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementByAmount(incrementValue))}
-        >
-          Add Amount
-        </button>
-        <button
-          className={styles.asyncButton}
-          onClick={() => dispatch(incrementAsync(incrementValue))}
-        >
-          Add Async
-        </button>
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementIfOdd(incrementValue))}
-        >
-          Add If Odd
-        </button>
+        {hasPrev &&
+          <button className={styles.button}
+            onClick={() => setCurrentPage(currentPage - 1)}>Prev</button>}
+        {hasNext &&
+          <button className={styles.button}
+            onClick={() => setCurrentPage(currentPage + 1)}>Next</button>}
       </div>
     </div>
   );

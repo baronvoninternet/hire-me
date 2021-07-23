@@ -2,11 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
-  decrement,
-  increment,
-  incrementByAmount,
-  incrementAsync,
-  incrementIfOdd,
   selectChildren,
   loadChildrenDataAsync,
   checkInChildAsync,

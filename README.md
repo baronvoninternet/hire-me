@@ -1,4 +1,14 @@
-# Interested in working for Famly?
+# Famly Code Assessment
+
+## Setup
+
+Run `yarn start`
+
+## Notes and Design Decisions
+
+I started with the template from `create-react-template --template redux-typescript` to get a basic structure with styles, tests, etc.
+
+## Interested in working for Famly?
 
 Give us a chance to see your beautiful code! 🤩 
 

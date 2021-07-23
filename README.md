@@ -4,6 +4,8 @@
 
 Run `yarn start`
 
+Some (very simple) tests can be run with `yarn test`
+
 ## Notes and Design Decisions
 
 I started with the template from `create-react-template --template redux-typescript` to get a basic structure with styles, tests, etc.
